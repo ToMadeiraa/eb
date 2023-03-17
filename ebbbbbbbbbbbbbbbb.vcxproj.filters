@@ -38,5 +38,11 @@
     <ClInclude Include="headers\view.h">
       <Filter>Исходные файлы</Filter>
     </ClInclude>
+    <ClInclude Include="headers\Point.hpp">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\Polygon.hpp">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

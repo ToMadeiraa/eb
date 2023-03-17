@@ -142,6 +142,8 @@
     <ClInclude Include="headers\console.h" />
     <ClInclude Include="headers\loads.hpp" />
     <ClInclude Include="headers\map.h" />
+    <ClInclude Include="headers\Point.hpp" />
+    <ClInclude Include="headers\Polygon.hpp" />
     <ClInclude Include="headers\Timer.hpp" />
     <ClInclude Include="headers\view.h" />
   </ItemGroup>
