@@ -1,8 +1,9 @@
 #include<iostream>
-#include"SFML\Graphics.hpp"
-#include"SFML\Window.hpp"
-#include"SFML\System.hpp"
-#include "SFML\Audio.hpp"
+#include"SFML/Window.hpp"
+#include"SFML/System.hpp"
+#include "SFML/Audio.hpp"
+#include <SFML/Graphics.hpp>
+
 #include<math.h>
 #include<vector>
 #include<cstdlib>
@@ -11,6 +12,7 @@
 #include"../headers/view.h"
 #include"../headers/loads.hpp"
 #include"../headers/console.h"
+
 
 #define WINDOW_WIDTH 1600
 #define MAP_SIZE_X 2048
@@ -63,6 +65,8 @@ int main()
 	RenderWindow window(VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "SS 360", Style::Fullscreen);
 	view.reset(sf::FloatRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT));
 	window.setFramerateLimit(framelimit);
+
+
 
 	loadTextures();
 	loadFonts();
@@ -138,6 +142,7 @@ int main()
 					zoom_current_var *= 1.03;
 				}
 			}
+
 		}
 		//расчет полета пулечки
 		playerCenter = Vector2f(player.sprte.getPosition().x, player.sprte.getPosition().y);
@@ -356,6 +361,5 @@ int main()
 
 		window.display();
 	}
-
 	return 0;
 }
