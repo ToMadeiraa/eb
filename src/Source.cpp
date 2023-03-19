@@ -3,7 +3,6 @@
 #include "SFML/Audio.hpp"
 #include <SFML/Graphics.hpp>
 
-
 #include<iostream>
 #include<math.h>
 #include<vector>
@@ -19,16 +18,17 @@
 
 #include"../headers/Polygon.hpp"
 #include"../headers/Point.hpp"
+#include"../headers/Objects.h"
 
 //------------------
 
 #define WINDOW_WIDTH 1600
+#define WINDOW_HEIGHT 900
 #define MAP_SIZE_X 2048
 #define MAP_SIZE_Y 2048
-#define WINDOW_HEIGHT 900
 #define framelimit 120
 #define PI 3.14159265f
-#define SHADER_ON 0
+#define SHADER_ON 1
 
 using namespace sf;
 
@@ -68,12 +68,16 @@ public:
 		s_obj = loaded_sprite;
 	}
 };
+
+
 //------------------
 
 void InitPolygons(std::vector<Polygon>& Polygons);
 void InitEdges(std::vector<Edge>& Edges, std::vector<Polygon>& Polygons);
 
 //------------------
+
+
 int main()
 {  
 	//------------------
@@ -88,6 +92,7 @@ int main()
 	loadTextures();
 	loadFonts();
 	loadSounds();
+	loadShaders();
 
 	sound.play(); //играет музыка
 
@@ -96,13 +101,13 @@ int main()
 	//враги
 	int i = 0;
 	std::vector<Unit> enemies;
-	while (i < 10) {
+	while (i < 0) {
 		Unit enemy(s_enemy);
 		enemies.push_back(enemy);
 		i++;
 	}
 	int j = 0;
-	while (j < 10) {
+	while (j < 0) {
 		Unit enemy(s_enemy2);
 		enemies.push_back(enemy);
 		j++;
@@ -110,8 +115,8 @@ int main()
 
 	//игрок
 	Unit player(s_player);
-	player.sprte.setPosition(1000, 1500);
-	view.setCenter(1000, 1500);
+	player.sprte.setPosition(800, 450);
+	view.setCenter(800, 450);
 
 	//пули
 	Bullet b1;
@@ -136,11 +141,9 @@ int main()
 	initText();
 
 	Vector2f playerCenter;
-	Vector2f mousePosWindow;
+	Vector2f playerPosWindow;
 	Vector2f aimDir;
 	Vector2f aimDirNorm;
-
-
 
 	//------------------
 	
@@ -151,17 +154,13 @@ int main()
 	InitEdges(Edges, Polygons);
 
 	std::vector<Point> Points;
-	Points.reserve(500);
+	Points.reserve(5000);
 	
 	std::vector<Vertex> Vertices;
-	Vertices.reserve(500);
+	Vertices.reserve(5000);
 
-	sf::Shader shadowShader;
-	shadowShader.loadFromFile("shadow.vert", "shadow.frag");
-	shadowShader.setUniform("u_resolution", Vector2f(WINDOW_WIDTH, WINDOW_HEIGHT));
-
-	sf::RenderTexture castTexture;
-	castTexture.create(WINDOW_WIDTH, WINDOW_HEIGHT);
+	RenderTexture castTexture;
+	castTexture.create(MAP_SIZE_X, MAP_SIZE_Y);
 	castTexture.setSmooth(true);
 
 	//------------------
@@ -191,96 +190,10 @@ int main()
 
 		}
 
-		//-------------------------------------------------
-		Vector2f mousePos(sf::Mouse::getPosition(window));
-		shadowShader.setUniform("u_mouse", mousePos);
-		Points.clear();
-		for (auto& e0 : Edges) {
-			// Because we have two points in every edge we need to iterate through it like this
-			for (uint32_t i = 0; i < 2; i++) {
-				// Calculating vector between mouse and point of our edge
-				Vector2f rd((!i ? e0.Start : e0.End) - mousePos);
-				float baseAng = atan2f(rd.y, rd.x);
-				float ang = 0.0f;
-				// For casting aditional rays
-				for (uint32_t j = 0; j < 3; j++) {
-					if (j == 0)	ang = baseAng - 0.0001f;
-					if (j == 1)	ang = baseAng;
-					if (j == 2)	ang = baseAng + 0.0001f;
-					rd.x = 100.0f * cosf(ang);
-					rd.y = 100.0f * sinf(ang);
-					Vector2f minP;
-					float		 minT1 = 9999.0f;
-					float		 minAng = 0.0f;
-					bool		 valid = false;
-
-					for (auto& e1 : Edges) {
-						// Algorithm detecting vector crossing
-						// https://stackoverflow.com/questions/563198/how-do-you-detect-where-two-line-segments-intersect
-
-						Vector2f sd = e1.End - e1.Start;
-
-						float t2 = (rd.x * (e1.Start.y - mousePos.y) + (rd.y * (mousePos.x - e1.Start.x))) / (sd.x * rd.y - sd.y * rd.x);
-
-						float t1 = (e1.Start.x + sd.x * t2 - mousePos.x) / rd.x;
-
-						if (t1 > 0 && t2 >= 0 && t2 <= 1.0f) {
-							if (t1 < minT1) {
-								// If vectors cross we add thier intersection point to our vector 
-
-								minT1 = t1;
-								minP = mousePos + rd * t1;
-								minAng = atan2f(minP.y - mousePos.y, minP.x - mousePos.x);
-
-								valid = true;
-							}
-						}
-					}
-
-					if (valid)
-						Points.emplace_back(Vector2f(minP.x, minP.y), minAng);
-				}
-			}
-		}
-
-		// We need to sort our points based on thier angle to draw them correctly
-		std::sort(Points.begin(), Points.end(), [&](const Point& a, const Point& b) { return a.Angle < b.Angle; });
-
-		window.clear(Color(25, 94, 46));
-
-		// Not sure about this part here maybe it can be done better
-		castTexture.clear();
-		Vertices.clear();
-
-		// Center of triangle fan
-		Vertices.emplace_back(mousePos);
-
-		for (uint32_t i = 0; i < Points.size(); i++)
-			Vertices.emplace_back(Points[i].Pos);
-
-		if (!Points.empty())
-			Vertices.emplace_back(Points[0].Pos);
-
-		castTexture.draw(Vertices.data(), Vertices.size(), TriangleFan);
-		castTexture.display();
-
-		#if SHADER_ON
-				window.draw(Sprite(castTexture.getTexture()), &shadowShader);
-		#else
-				window.draw(sf::Sprite(castTexture.getTexture()));
-		#endif
-
-		// Drawing shapes
-		for (auto& p : Polygons)
-			window.draw(p);
-
-		//window.display();
-		//-------------------------------------------------
-
 		//расчет полета пулечки
 		playerCenter = Vector2f(player.sprte.getPosition().x, player.sprte.getPosition().y);
-		mousePosWindow = Vector2f(view.getCenter().x + (Mouse::getPosition().x - WINDOW_WIDTH / 2)*zoom_current_var, view.getCenter().y + (Mouse::getPosition().y - WINDOW_HEIGHT / 2)*zoom_current_var);
-		aimDir = mousePosWindow - playerCenter;
+		playerPosWindow = Vector2f(view.getCenter().x + (Mouse::getPosition().x - WINDOW_WIDTH / 2)*zoom_current_var, view.getCenter().y + (Mouse::getPosition().y - WINDOW_HEIGHT / 2)*zoom_current_var);
+		aimDir = playerPosWindow - playerCenter;
 		aimDirNorm = aimDir / sqrt(pow(aimDir.x, 2) + pow(aimDir.y, 2));
 		float deg = atan2(aimDirNorm.y, aimDirNorm.x) * 180 / PI;
 		player.sprte.setRotation(deg + 90);
@@ -362,7 +275,7 @@ int main()
 
 		//отрисовка
 		window.setView(view); //позиция камеры
-		window.clear(Color::Black);
+		window.clear();
 
 		//отрисовка карты
 		for (int i = 0; i < height; i++) {
@@ -370,16 +283,20 @@ int main()
 				if (TileMap[i][j] == ' ') {
 					s_map.setTextureRect(IntRect(0, 0, 32, 32));
 				}
-				if (TileMap[i][j] == 's') {
+				else if (TileMap[i][j] == 's') {
 					s_map.setTextureRect(IntRect(32, 0, 32, 32));
 				}
-				if (TileMap[i][j] == '0') {
+				else if (TileMap[i][j] == '0') {
 					s_map.setTextureRect(IntRect(64, 0, 32, 32));
+				}
+				else if (TileMap[i][j] == 'w') {
+					s_map.setTextureRect(IntRect(96, 0, 32, 32));
 				}
 				s_map.setPosition(j * 32,i * 32);
 				window.draw(s_map);
 			}
 		}
+		
 
 		//отрисовка крови
 		for (size_t k = 0; k < bloods.size(); k++) {
@@ -388,7 +305,6 @@ int main()
 		for (size_t l = 0; l < ammos.size(); l++) {
 			window.draw(ammos[l].s_obj);
 		}
-
 
 		//отрисовка врагов
 		for (int k = 0; k < enemies.size(); k++) {
@@ -492,51 +408,86 @@ int main()
 		window.draw(player_y_text);
 		window.draw(zoom_text);
 
+
+		//-------------------------------------------------
+		Vector2f playerPos(player.sprte.getPosition().x + WINDOW_WIDTH/2-view.getCenter().x, player.sprte.getPosition().y + WINDOW_HEIGHT / 2 - view.getCenter().y);
+		shadowShader.setUniform("u_mouse", playerPos);
+		Points.clear();
+		for (auto& e0 : Edges) {
+			// Because we have two points in every edge we need to iterate through it like this
+			for (uint32_t i = 0; i < 2; i++) {
+				// Calculating vector between mouse and point of our edge
+				Vector2f rd((!i ? e0.Start : e0.End) - playerPos);
+				float baseAng = atan2f(rd.y, rd.x);
+				float ang = 0.0f;
+				// For casting aditional rays
+				for (uint32_t j = 0; j < 3; j++) {
+					if (j == 0)	ang = baseAng - 0.001f;
+					if (j == 1)	ang = baseAng;
+					if (j == 2)	ang = baseAng + 0.001f;
+					rd.x = 100.0f * cosf(ang);
+					rd.y = 100.0f * sinf(ang);
+					Vector2f minP;
+					float minT1 = 9999.0f;
+					float minAng = 0.0f;
+					bool valid = false;
+
+					for (auto& e1 : Edges) {
+						Vector2f sd = e1.End - e1.Start;
+						float t2 = (rd.x * (e1.Start.y - playerPos.y) + (rd.y * (playerPos.x - e1.Start.x))) / (sd.x * rd.y - sd.y * rd.x);
+						float t1 = (e1.Start.x + sd.x * t2 - playerPos.x) / rd.x;
+						if (t1 > 0 && t2 >= 0 && t2 <= 1.0f) {
+							if (t1 < minT1) {
+								// If vectors cross we add thier intersection point to our vector 
+								minT1 = t1;
+								minP = playerPos + rd * t1;
+								minAng = atan2f(minP.y - playerPos.y, minP.x - playerPos.x);
+								valid = true;
+							}
+						}
+					}
+
+					if (valid)
+						Points.emplace_back(Vector2f(minP.x, minP.y), minAng);
+				}
+			}
+		}
+
+		// We need to sort our points based on thier angle to draw them correctly
+		std::sort(Points.begin(), Points.end(), [&](const Point& a, const Point& b) { return a.Angle < b.Angle; });
+
+		//window.clear();
+
+		// Not sure about this part here maybe it can be done better
+		castTexture.clear();
+		Vertices.clear();
+
+		// Center of triangle fan
+		Vertices.emplace_back(playerPos);
+
+		for (uint32_t i = 0; i < Points.size(); i++)
+			Vertices.emplace_back(Points[i].Pos);
+
+		if (!Points.empty())
+			Vertices.emplace_back(Points[0].Pos);
+
+		castTexture.draw(Vertices.data(), Vertices.size(), TriangleFan);
+		castTexture.display();
+
+		#if SHADER_ON
+				window.draw(Sprite(castTexture.getTexture()), &shadowShader);
+		#else
+				window.draw(Sprite(castTexture.getTexture()));
+		#endif
+
+		// Drawing shapes
+		for (auto& p : Polygons)
+			window.draw(p);
+
+		//-------------------------------------------------
+
 		window.display();
 	}
 	return 0;
 }
 
-void InitPolygons(std::vector<Polygon>& Polygons) {
-	// Because of heap allocation in our Polygon class we need to 
-	// reserve how many objects we want in our vector to avoid copy constructors
-
-	Polygons.reserve(8); // <- it means 8 shapes (it's always better to reserve more then less)
-	
-	// Square 0
-	{
-		// Creates Polygon with 4 vertices
-		Polygon p(4);
-		Polygons.emplace_back(p);
-		//Polygon& p_pointer = Polygons[0];
-
-		// Note: start edge goes first
-		p.Edges[0] = { sf::Vector2f(200.0f, 200.0f), sf::Vector2f(300.0f, 200.0f) };
-		p.Edges[1] = { sf::Vector2f(300.0f, 200.0f), sf::Vector2f(300.0f, 300.0f) };
-		p.Edges[2] = { sf::Vector2f(300.0f, 300.0f), sf::Vector2f(200.0f, 300.0f) };
-		p.Edges[3] = { sf::Vector2f(200.0f, 300.0f), sf::Vector2f(200.0f, 200.0f) };
-	}
-
-	// Square 3 (Walls)
-	{
-		//Polygon& p = Polygons.emplace_back(4);
-		Polygon p(4);
-		Polygons.emplace_back(p);
-		//Polygon& p_pointer = Polygons[0];
-
-		p.Edges[0] = { sf::Vector2f(0.0f,		  0.0f), sf::Vector2f(WINDOW_WIDTH, 0.0f) };
-		p.Edges[1] = { sf::Vector2f(WINDOW_WIDTH, 0.0f), sf::Vector2f(WINDOW_WIDTH, WINDOW_HEIGHT) };
-		p.Edges[2] = { sf::Vector2f(WINDOW_WIDTH, WINDOW_HEIGHT), sf::Vector2f(0.0f,		 WINDOW_HEIGHT) };
-		p.Edges[3] = { sf::Vector2f(0.0f,		  WINDOW_HEIGHT), sf::Vector2f(0.0f,		 0.0f) };
-	}
-}
-
-
-
-void InitEdges(std::vector<Edge>& Edges, std::vector<Polygon>& Polygons) {
-	Edges.reserve(50);
-
-	for (auto& p : Polygons)
-		for (uint32_t i = 0; i < p.EdgesCount; i++)
-			Edges.push_back(p.Edges[i]);
-}

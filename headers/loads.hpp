@@ -25,6 +25,7 @@ Sprite s_ammo;
 
 
 
+
 void loadTextures(void) {
 	image_map.loadFromFile("images/tiles.png");
 	image_enemy.loadFromFile("images/enemy_small.png");
@@ -83,5 +84,12 @@ Font font;
 
 void loadFonts() {
 	font.loadFromFile("fonts/Freshman.ttf");
+}
+
+Shader shadowShader;
+
+void loadShaders(void) {
+	shadowShader.loadFromFile("shaders/shadow.vert", "shaders/shadow.frag");
+	shadowShader.setUniform("u_resolution", Vector2f(1600, 900));
 }
 

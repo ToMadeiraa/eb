@@ -5,7 +5,7 @@
 struct Point
 {
 	sf::Vector2f Pos;
-	float		 Angle = 0.0f;
+	float Angle = 0.0f;
 
 	Point() {
 
