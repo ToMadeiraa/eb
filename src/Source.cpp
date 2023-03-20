@@ -8,19 +8,16 @@
 #include<vector>
 #include<cstdlib>
 #include <algorithm>
+
 #include "../headers/Timer.hpp"
 #include"../headers/map.h"
 #include"../headers/view.h"
 #include"../headers/loads.hpp"
 #include"../headers/console.h"
-
-//------------------
-
 #include"../headers/Polygon.hpp"
 #include"../headers/Point.hpp"
 #include"../headers/Objects.h"
 
-//------------------
 
 #define WINDOW_WIDTH 1600
 #define WINDOW_HEIGHT 900
@@ -69,22 +66,10 @@ public:
 	}
 };
 
-
-//------------------
-
-void InitPolygons(std::vector<Polygon>& Polygons);
-void InitEdges(std::vector<Edge>& Edges, std::vector<Polygon>& Polygons);
-
-//------------------
-
-
 int main()
 {  
-	//------------------
 	ContextSettings settings;
 	settings.antialiasingLevel = 8;
-	//------------------
-
 	RenderWindow window(VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "SS 360", Style::Fullscreen, settings);
 	view.reset(FloatRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT));
 	window.setFramerateLimit(framelimit);
@@ -145,8 +130,6 @@ int main()
 	Vector2f aimDir;
 	Vector2f aimDirNorm;
 
-	//------------------
-	
 	std::vector<Polygon> Polygons;
 	InitPolygons(Polygons);
 
@@ -154,22 +137,19 @@ int main()
 	InitEdges(Edges, Polygons);
 
 	std::vector<Point> Points;
-	Points.reserve(5000);
+	Points.reserve(3000);
 	
 	std::vector<Vertex> Vertices;
-	Vertices.reserve(5000);
+	Vertices.reserve(3000);
 
 	RenderTexture castTexture;
 	castTexture.create(MAP_SIZE_X, MAP_SIZE_Y);
 	castTexture.setSmooth(true);
 
-	//------------------
-
 	double zoom_current_var = 1;
 	Event event;
 	while (window.isOpen())
 	{
-		
 		while (window.pollEvent(event))
 		{
 			if (event.type == Event::Closed)
@@ -187,7 +167,6 @@ int main()
 					zoom_current_var *= 1.03;
 				}
 			}
-
 		}
 
 		//расчет полета пулечки
@@ -259,12 +238,14 @@ int main()
 				}
 			}
 		}
+
 		//появление патриков
 		if (frames_timer == 300) {
 			bullet_ammos.s_obj.setPosition(Vector2f(rand() % MAP_SIZE_X - 30, rand() % MAP_SIZE_Y - 30));
 			ammos.push_back(bullet_ammos);
 			frames_timer = 0;
 		}
+
 		//подбор патриков
 		for (size_t i = 0; i < ammos.size(); i++) {
 			if (ammos[i].s_obj.getGlobalBounds().intersects(player.sprte.getGlobalBounds())) {
@@ -296,12 +277,13 @@ int main()
 				window.draw(s_map);
 			}
 		}
-		
 
 		//отрисовка крови
 		for (size_t k = 0; k < bloods.size(); k++) {
 			window.draw(bloods[k].s_obj);
 		}
+
+		//отрисовка патронов
 		for (size_t l = 0; l < ammos.size(); l++) {
 			window.draw(ammos[l].s_obj);
 		}
@@ -336,7 +318,6 @@ int main()
 			window.draw(bullets[i].shape);
 		}
 		
-		
 		// данные
 		double x_view_coord = view.getCenter().x; //получаем X координату центра камеры
 		double y_view_coord = view.getCenter().y; //получаем Y координату центра камеры
@@ -345,7 +326,6 @@ int main()
 		mytime.setTime_size(3*zoom_current_var);
 		mytime.setposition(x_text+ (WINDOW_WIDTH-200) / 2*zoom_current_var, y_view_coord - (WINDOW_HEIGHT / 2 - 10) * zoom_current_var);
 		
-
 		//фреймы
 		frames_text.setString("Frames: " + std::to_string(total_frames));
 		frames_text.setPosition(x_text, y_view_coord - (WINDOW_HEIGHT  / 2 - 10) * zoom_current_var);
@@ -358,25 +338,21 @@ int main()
 		mouse_pos_text.setPosition(x_text, y_view_coord - (WINDOW_HEIGHT / 2 - 40) * zoom_current_var);
 		mouse_pos_text.setCharacterSize(20 * zoom_current_var);
 		
-
 		//x мышки на экране
 		mouse_x_text.setString("Mouse X on Screen: " + std::to_string(Mouse::getPosition().x));
 		mouse_x_text.setPosition(x_text, y_view_coord - (WINDOW_HEIGHT / 2 - 70) * zoom_current_var);
 		mouse_x_text.setCharacterSize(20 * zoom_current_var);
 		
-
 		//y мышки
 		mouse_y_text.setString("Mouse Y on Screen: " + std::to_string(Mouse::getPosition().y));
 		mouse_y_text.setPosition(x_text, y_view_coord - (WINDOW_HEIGHT / 2 - 100) * zoom_current_var);
 		mouse_y_text.setCharacterSize(20 * zoom_current_var);
 		
-
 		//x мышки на карте
 		mouse_x_text_map.setString("Mouse X on map: " + std::to_string(x_view_coord + Mouse::getPosition().x - WINDOW_WIDTH / 2));
 		mouse_x_text_map.setPosition(x_text, y_view_coord - (WINDOW_HEIGHT / 2 - 130) * zoom_current_var);
 		mouse_x_text_map.setCharacterSize(20 * zoom_current_var);
 		
-
 		//y мышки на карте
 		mouse_y_text_map.setString("Mouse Y on map: " + std::to_string(y_view_coord + Mouse::getPosition().y - WINDOW_HEIGHT / 2));
 		mouse_y_text_map.setPosition(x_text, y_view_coord - (WINDOW_HEIGHT / 2 - 160) * zoom_current_var);
@@ -408,40 +384,45 @@ int main()
 		window.draw(player_y_text);
 		window.draw(zoom_text);
 
-
 		//-------------------------------------------------
-		Vector2f playerPos(player.sprte.getPosition().x + WINDOW_WIDTH/2-view.getCenter().x, player.sprte.getPosition().y + WINDOW_HEIGHT / 2 - view.getCenter().y);
-		shadowShader.setUniform("u_mouse", playerPos);
+		Vector2f playerPos(player.sprte.getPosition().x, player.sprte.getPosition().y);
+		Vector2f shaderPos(player.sprte.getPosition().x + WINDOW_WIDTH / 2 - view.getCenter().x, player.sprte.getPosition().y + WINDOW_HEIGHT / 2 - view.getCenter().y);
+		shadowShader.setUniform("u_mouse", shaderPos);
+
 		Points.clear();
 		for (auto& e0 : Edges) {
 			// Because we have two points in every edge we need to iterate through it like this
 			for (uint32_t i = 0; i < 2; i++) {
-				// Calculating vector between mouse and point of our edge
+				// Calculating vector between player and point of our edge
 				Vector2f rd((!i ? e0.Start : e0.End) - playerPos);
 				float baseAng = atan2f(rd.y, rd.x);
 				float ang = 0.0f;
 				// For casting aditional rays
 				for (uint32_t j = 0; j < 3; j++) {
-					if (j == 0)	ang = baseAng - 0.001f;
-					if (j == 1)	ang = baseAng;
-					if (j == 2)	ang = baseAng + 0.001f;
+					if (j == 0) {
+						ang = baseAng - 0.001f;
+					}
+					else if (j == 1) {
+						ang = baseAng;
+					}
+					else if (j == 2) {
+						ang = baseAng + 0.001f;
+					}
 					rd.x = 100.0f * cosf(ang);
 					rd.y = 100.0f * sinf(ang);
 					Vector2f minP;
 					float minT1 = 9999.0f;
 					float minAng = 0.0f;
 					bool valid = false;
-
 					for (auto& e1 : Edges) {
 						Vector2f sd = e1.End - e1.Start;
 						float t2 = (rd.x * (e1.Start.y - playerPos.y) + (rd.y * (playerPos.x - e1.Start.x))) / (sd.x * rd.y - sd.y * rd.x);
 						float t1 = (e1.Start.x + sd.x * t2 - playerPos.x) / rd.x;
 						if (t1 > 0 && t2 >= 0 && t2 <= 1.0f) {
 							if (t1 < minT1) {
-								// If vectors cross we add thier intersection point to our vector 
 								minT1 = t1;
 								minP = playerPos + rd * t1;
-								minAng = atan2f(minP.y - playerPos.y, minP.x - playerPos.x);
+								minAng = atan2f(minP.y - playerPos.y , minP.x - playerPos.x);
 								valid = true;
 							}
 						}
@@ -453,16 +434,13 @@ int main()
 			}
 		}
 
-		// We need to sort our points based on thier angle to draw them correctly
 		std::sort(Points.begin(), Points.end(), [&](const Point& a, const Point& b) { return a.Angle < b.Angle; });
 
 		//window.clear();
 
-		// Not sure about this part here maybe it can be done better
 		castTexture.clear();
 		Vertices.clear();
 
-		// Center of triangle fan
 		Vertices.emplace_back(playerPos);
 
 		for (uint32_t i = 0; i < Points.size(); i++)
@@ -479,10 +457,6 @@ int main()
 		#else
 				window.draw(Sprite(castTexture.getTexture()));
 		#endif
-
-		// Drawing shapes
-		for (auto& p : Polygons)
-			window.draw(p);
 
 		//-------------------------------------------------
 
