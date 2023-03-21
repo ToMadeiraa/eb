@@ -71,12 +71,12 @@ void loadSounds(void) {
 	s_popadanie.setBuffer(popadanie);
 	s_popadanie.setVolume(10.f);
 	s_step.setBuffer(step);
-	s_step.setVolume(10.f);
+	s_step.setVolume(00.f);
 	s_take_ammo.setBuffer(take_ammo);
-	s_take_ammo.setVolume(10.f);
-	sound.setVolume(10.f);
+	s_take_ammo.setVolume(00.f);
+	sound.setVolume(00.f);
 	sound.setBuffer(music1);
-	gun.setVolume(10.f);
+	gun.setVolume(00.f);
 	gun.setBuffer(fire1);
 }
 

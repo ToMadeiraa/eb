@@ -1,7 +1,21 @@
 #pragma once
 
+class Impassable_Objects
+{
+
+public:
+	RectangleShape imp_shape;
+	Impassable_Objects(float a, float b, size_t x, size_t y) {
+		this->imp_shape.setSize(Vector2f(a, b));
+		this->imp_shape.setOrigin(a / 2, b / 2);
+		this->imp_shape.setPosition(x, y);
+		this->imp_shape.setFillColor(Color::Blue);
+	}
+};
+
 void InitPolygons(std::vector<Polygon>& Polygons);
 void InitEdges(std::vector<Edge>& Edges, std::vector<Polygon>& Polygons);
+void InitObjects(std::vector<Impassable_Objects>& ImpObjects);
 
 void InitPolygons(std::vector<Polygon>& Polygons) {
 	Polygons.reserve(17);
@@ -163,8 +177,6 @@ void InitPolygons(std::vector<Polygon>& Polygons) {
 	
 }
 
-
-
 void InitEdges(std::vector<Edge>& Edges, std::vector<Polygon>& Polygons) {
 	Edges.reserve(68);
 	for (auto& p : Polygons) {
@@ -173,3 +185,16 @@ void InitEdges(std::vector<Edge>& Edges, std::vector<Polygon>& Polygons) {
 		}
 	}
 }
+
+void InitObjects(std::vector<Impassable_Objects>& ImpObjects) {
+	for (size_t i = 0; i < 8; i++) {
+		Impassable_Objects a(96, 96, 384+48, 192+i*7*32+48);
+		ImpObjects.push_back(a);
+	}
+
+	for (size_t i = 0; i < 8; i++) {
+		Impassable_Objects a(96, 96, 1376 + 48, 192 + i * 7 * 32 + 48);
+		ImpObjects.push_back(a);
+	}
+}
+

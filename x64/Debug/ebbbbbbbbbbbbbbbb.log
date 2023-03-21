@@ -1,69 +1,55 @@
 ﻿  Source.cpp
 c:\users\pudje\source\repos\ebbbbbbbbbbbbbbbb\headers\view.h(8): warning C4244: инициализация: преобразование "int" в "float", возможна потеря данных
-c:\users\pudje\source\repos\ebbbbbbbbbbbbbbbb\src\source.cpp(54): warning C4244: аргумент: преобразование "int" в "T", возможна потеря данных
+c:\users\pudje\source\repos\ebbbbbbbbbbbbbbbb\headers\objects.h(11): warning C4244: аргумент: преобразование "size_t" в "float", возможна потеря данных
+c:\users\pudje\source\repos\ebbbbbbbbbbbbbbbb\src\source.cpp(59): warning C4244: аргумент: преобразование "int" в "T", возможна потеря данных
           with
           [
               T=float
           ]
-c:\users\pudje\source\repos\ebbbbbbbbbbbbbbbb\src\source.cpp(174): warning C4244: аргумент: преобразование "double" в "T", возможна потеря данных
+c:\users\pudje\source\repos\ebbbbbbbbbbbbbbbb\src\source.cpp(189): warning C4244: аргумент: преобразование "double" в "T", возможна потеря данных
           with
           [
               T=float
           ]
-c:\users\pudje\source\repos\ebbbbbbbbbbbbbbbb\src\source.cpp(183): warning C4244: аргумент: преобразование "const T" в "int", возможна потеря данных
+c:\users\pudje\source\repos\ebbbbbbbbbbbbbbbb\src\source.cpp(301): warning C4244: аргумент: преобразование "const T" в "int", возможна потеря данных
           with
           [
               T=float
           ]
-c:\users\pudje\source\repos\ebbbbbbbbbbbbbbbb\src\source.cpp(187): warning C4244: аргумент: преобразование "const T" в "int", возможна потеря данных
+c:\users\pudje\source\repos\ebbbbbbbbbbbbbbbb\src\source.cpp(333): warning C4244: аргумент: преобразование "int" в "T", возможна потеря данных
           with
           [
               T=float
           ]
-c:\users\pudje\source\repos\ebbbbbbbbbbbbbbbb\src\source.cpp(191): warning C4244: аргумент: преобразование "const T" в "int", возможна потеря данных
+c:\users\pudje\source\repos\ebbbbbbbbbbbbbbbb\src\source.cpp(334): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+c:\users\pudje\source\repos\ebbbbbbbbbbbbbbbb\src\source.cpp(335): warning C4244: инициализация: преобразование "int" в "float", возможна потеря данных
+c:\users\pudje\source\repos\ebbbbbbbbbbbbbbbb\src\source.cpp(348): warning C4244: аргумент: преобразование "int" в "T", возможна потеря данных
           with
           [
               T=float
           ]
-c:\users\pudje\source\repos\ebbbbbbbbbbbbbbbb\src\source.cpp(195): warning C4244: аргумент: преобразование "const T" в "int", возможна потеря данных
-          with
-          [
-              T=float
-          ]
-c:\users\pudje\source\repos\ebbbbbbbbbbbbbbbb\src\source.cpp(229): warning C4244: аргумент: преобразование "int" в "T", возможна потеря данных
-          with
-          [
-              T=float
-          ]
-c:\users\pudje\source\repos\ebbbbbbbbbbbbbbbb\src\source.cpp(230): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-c:\users\pudje\source\repos\ebbbbbbbbbbbbbbbb\src\source.cpp(231): warning C4244: инициализация: преобразование "int" в "float", возможна потеря данных
-c:\users\pudje\source\repos\ebbbbbbbbbbbbbbbb\src\source.cpp(244): warning C4244: аргумент: преобразование "int" в "T", возможна потеря данных
-          with
-          [
-              T=float
-          ]
-c:\users\pudje\source\repos\ebbbbbbbbbbbbbbbb\src\source.cpp(276): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-c:\users\pudje\source\repos\ebbbbbbbbbbbbbbbb\src\source.cpp(307): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
-c:\users\pudje\source\repos\ebbbbbbbbbbbbbbbb\src\source.cpp(310): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
-c:\users\pudje\source\repos\ebbbbbbbbbbbbbbbb\src\source.cpp(312): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
-c:\users\pudje\source\repos\ebbbbbbbbbbbbbbbb\src\source.cpp(326): warning C4244: аргумент: преобразование "double" в "int", возможна потеря данных
-c:\users\pudje\source\repos\ebbbbbbbbbbbbbbbb\src\source.cpp(327): warning C4244: аргумент: преобразование "double" в "int", возможна потеря данных
-c:\users\pudje\source\repos\ebbbbbbbbbbbbbbbb\src\source.cpp(331): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
-c:\users\pudje\source\repos\ebbbbbbbbbbbbbbbb\src\source.cpp(332): warning C4244: аргумент: преобразование "double" в "unsigned int", возможна потеря данных
-c:\users\pudje\source\repos\ebbbbbbbbbbbbbbbb\src\source.cpp(338): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
-c:\users\pudje\source\repos\ebbbbbbbbbbbbbbbb\src\source.cpp(339): warning C4244: аргумент: преобразование "double" в "unsigned int", возможна потеря данных
-c:\users\pudje\source\repos\ebbbbbbbbbbbbbbbb\src\source.cpp(343): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
-c:\users\pudje\source\repos\ebbbbbbbbbbbbbbbb\src\source.cpp(344): warning C4244: аргумент: преобразование "double" в "unsigned int", возможна потеря данных
-c:\users\pudje\source\repos\ebbbbbbbbbbbbbbbb\src\source.cpp(348): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
-c:\users\pudje\source\repos\ebbbbbbbbbbbbbbbb\src\source.cpp(349): warning C4244: аргумент: преобразование "double" в "unsigned int", возможна потеря данных
-c:\users\pudje\source\repos\ebbbbbbbbbbbbbbbb\src\source.cpp(353): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
-c:\users\pudje\source\repos\ebbbbbbbbbbbbbbbb\src\source.cpp(354): warning C4244: аргумент: преобразование "double" в "unsigned int", возможна потеря данных
-c:\users\pudje\source\repos\ebbbbbbbbbbbbbbbb\src\source.cpp(358): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
-c:\users\pudje\source\repos\ebbbbbbbbbbbbbbbb\src\source.cpp(359): warning C4244: аргумент: преобразование "double" в "unsigned int", возможна потеря данных
-c:\users\pudje\source\repos\ebbbbbbbbbbbbbbbb\src\source.cpp(363): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
-c:\users\pudje\source\repos\ebbbbbbbbbbbbbbbb\src\source.cpp(364): warning C4244: аргумент: преобразование "double" в "unsigned int", возможна потеря данных
-c:\users\pudje\source\repos\ebbbbbbbbbbbbbbbb\src\source.cpp(368): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
-c:\users\pudje\source\repos\ebbbbbbbbbbbbbbbb\src\source.cpp(369): warning C4244: аргумент: преобразование "double" в "unsigned int", возможна потеря данных
-c:\users\pudje\source\repos\ebbbbbbbbbbbbbbbb\src\source.cpp(373): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
-c:\users\pudje\source\repos\ebbbbbbbbbbbbbbbb\src\source.cpp(374): warning C4244: аргумент: преобразование "double" в "unsigned int", возможна потеря данных
+c:\users\pudje\source\repos\ebbbbbbbbbbbbbbbb\src\source.cpp(380): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+c:\users\pudje\source\repos\ebbbbbbbbbbbbbbbb\src\source.cpp(411): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
+c:\users\pudje\source\repos\ebbbbbbbbbbbbbbbb\src\source.cpp(414): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
+c:\users\pudje\source\repos\ebbbbbbbbbbbbbbbb\src\source.cpp(416): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
+c:\users\pudje\source\repos\ebbbbbbbbbbbbbbbb\src\source.cpp(430): warning C4244: аргумент: преобразование "double" в "int", возможна потеря данных
+c:\users\pudje\source\repos\ebbbbbbbbbbbbbbbb\src\source.cpp(431): warning C4244: аргумент: преобразование "double" в "int", возможна потеря данных
+c:\users\pudje\source\repos\ebbbbbbbbbbbbbbbb\src\source.cpp(435): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
+c:\users\pudje\source\repos\ebbbbbbbbbbbbbbbb\src\source.cpp(436): warning C4244: аргумент: преобразование "double" в "unsigned int", возможна потеря данных
+c:\users\pudje\source\repos\ebbbbbbbbbbbbbbbb\src\source.cpp(442): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
+c:\users\pudje\source\repos\ebbbbbbbbbbbbbbbb\src\source.cpp(443): warning C4244: аргумент: преобразование "double" в "unsigned int", возможна потеря данных
+c:\users\pudje\source\repos\ebbbbbbbbbbbbbbbb\src\source.cpp(447): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
+c:\users\pudje\source\repos\ebbbbbbbbbbbbbbbb\src\source.cpp(448): warning C4244: аргумент: преобразование "double" в "unsigned int", возможна потеря данных
+c:\users\pudje\source\repos\ebbbbbbbbbbbbbbbb\src\source.cpp(452): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
+c:\users\pudje\source\repos\ebbbbbbbbbbbbbbbb\src\source.cpp(453): warning C4244: аргумент: преобразование "double" в "unsigned int", возможна потеря данных
+c:\users\pudje\source\repos\ebbbbbbbbbbbbbbbb\src\source.cpp(457): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
+c:\users\pudje\source\repos\ebbbbbbbbbbbbbbbb\src\source.cpp(458): warning C4244: аргумент: преобразование "double" в "unsigned int", возможна потеря данных
+c:\users\pudje\source\repos\ebbbbbbbbbbbbbbbb\src\source.cpp(462): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
+c:\users\pudje\source\repos\ebbbbbbbbbbbbbbbb\src\source.cpp(463): warning C4244: аргумент: преобразование "double" в "unsigned int", возможна потеря данных
+c:\users\pudje\source\repos\ebbbbbbbbbbbbbbbb\src\source.cpp(467): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
+c:\users\pudje\source\repos\ebbbbbbbbbbbbbbbb\src\source.cpp(468): warning C4244: аргумент: преобразование "double" в "unsigned int", возможна потеря данных
+c:\users\pudje\source\repos\ebbbbbbbbbbbbbbbb\src\source.cpp(472): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
+c:\users\pudje\source\repos\ebbbbbbbbbbbbbbbb\src\source.cpp(473): warning C4244: аргумент: преобразование "double" в "unsigned int", возможна потеря данных
+c:\users\pudje\source\repos\ebbbbbbbbbbbbbbbb\src\source.cpp(477): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
+c:\users\pudje\source\repos\ebbbbbbbbbbbbbbbb\src\source.cpp(478): warning C4244: аргумент: преобразование "double" в "unsigned int", возможна потеря данных
   ebbbbbbbbbbbbbbbb.vcxproj -> C:\Users\Pudje\source\repos\ebbbbbbbbbbbbbbbb\x64\Debug\ebbbbbbbbbbbbbbbb.exe

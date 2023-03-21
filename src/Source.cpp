@@ -29,6 +29,9 @@
 
 using namespace sf;
 
+
+void check_left(void);
+
 class Bullet
 {
 public:
@@ -47,9 +50,11 @@ class Unit
 {
 
 public:
-	Sprite sprte;
+	//Sprite sprte;
+	CircleShape sprte;
 	Unit(Sprite loaded_sprite) {
-		sprte = loaded_sprite;
+		//sprte = loaded_sprite;
+		sprte.setRadius(32);
 		this->sprte.setOrigin(32, 32);
 		this->sprte.setPosition(Vector2f(rand() % MAP_SIZE_X - 30, rand() % MAP_SIZE_Y/2 - 30));
 	}
@@ -65,6 +70,7 @@ public:
 		s_obj = loaded_sprite;
 	}
 };
+
 
 int main()
 {  
@@ -136,6 +142,9 @@ int main()
 	std::vector<Edge> Edges;
 	InitEdges(Edges, Polygons);
 
+	std::vector<Impassable_Objects> Imp_Objects;
+	InitObjects(Imp_Objects);
+
 	std::vector<Point> Points;
 	Points.reserve(3000);
 	
@@ -148,6 +157,12 @@ int main()
 
 	double zoom_current_var = 1;
 	Event event;
+
+	int stack_left = 0;
+	int stack_right = 0;
+	int stack_up = 0;
+	int stack_down = 0;
+
 	while (window.isOpen())
 	{
 		while (window.pollEvent(event))
@@ -178,23 +193,112 @@ int main()
 		player.sprte.setRotation(deg + 90);
 
 		//настройка управления
-		if (Keyboard::isKeyPressed(Keyboard::A) && player.sprte.getPosition().x > 32) {
-			player.sprte.move(-480 / framelimit, 0);
-			getPlayerCoordinateForView(player.sprte.getPosition().x, player.sprte.getPosition().y);
-		}
-		if (Keyboard::isKeyPressed(Keyboard::D) && player.sprte.getPosition().x < 2048-32) {
-			player.sprte.move(480 / framelimit, 0);
-			getPlayerCoordinateForView(player.sprte.getPosition().x, player.sprte.getPosition().y);
-		}
-		if (Keyboard::isKeyPressed(Keyboard::W) && player.sprte.getPosition().y > 32) {
-			player.sprte.move(0, -480 / framelimit);
-			getPlayerCoordinateForView(player.sprte.getPosition().x, player.sprte.getPosition().y);
-		}
-		if (Keyboard::isKeyPressed(Keyboard::S) && player.sprte.getPosition().y < 2048 - 32) {
-			player.sprte.move(0, 480 / framelimit);
-			getPlayerCoordinateForView(player.sprte.getPosition().x, player.sprte.getPosition().y);
-		}
+		float speed = 360 / framelimit;
+		size_t Imp_Objects_Size = Imp_Objects.size();
+
 		
+
+		//влево
+		if (Keyboard::isKeyPressed(Keyboard::A) && player.sprte.getPosition().x > 32) {
+			if (stack_right == 1) {
+				player.sprte.move(-speed, 0);
+				stack_right = 0;
+			}
+			for (size_t i = 0; i < Imp_Objects_Size; i++) {
+				if (player.sprte.getGlobalBounds().intersects(Imp_Objects[i].imp_shape.getGlobalBounds())) {
+					stack_left = 1;
+					break;
+				}
+				else {
+					stack_left = 0;
+				}
+			}
+			if (stack_left == 0) {
+				player.sprte.move(-speed, 0);
+				stack_right = 0;
+			}
+			else {
+				player.sprte.move(0, -1);
+			}
+		}
+
+		//вправо
+		if (Keyboard::isKeyPressed(Keyboard::D) && player.sprte.getPosition().x < 2048-32) {
+			if (stack_left == 1) {
+				player.sprte.move(speed, 0);
+				stack_left = 0;
+			}
+			for (size_t i = 0; i < Imp_Objects_Size; i++) {
+				if (player.sprte.getGlobalBounds().intersects(Imp_Objects[i].imp_shape.getGlobalBounds())) {
+					stack_right = 1;
+					break;
+				}
+				else {
+					stack_right = 0;
+				}
+			}
+			if (stack_right == 0) {
+				player.sprte.move(speed, 0);
+				stack_left = 0;
+			}
+			else {
+				player.sprte.move(0, 1);
+			}
+		}
+
+
+		//вверх
+		if (Keyboard::isKeyPressed(Keyboard::W) && player.sprte.getPosition().y > 32) {
+			if (stack_down == 1) {
+				player.sprte.move(0, -speed);
+				stack_down = 0;
+			}
+			for (size_t i = 0; i < Imp_Objects_Size; i++) {
+				if (player.sprte.getGlobalBounds().intersects(Imp_Objects[i].imp_shape.getGlobalBounds())) {
+					stack_up = 1;
+					break;
+				}
+				else {
+					stack_up = 0;
+				}
+			}
+			if (stack_up == 0) {
+				player.sprte.move(0, -speed);
+				stack_down = 0;
+			}
+			else {
+				player.sprte.move(-1, 0);
+			}
+		}
+
+		//вниз
+		if (Keyboard::isKeyPressed(Keyboard::S) && player.sprte.getPosition().y < 2048 - 32) {
+
+
+			if (stack_up == 1) {
+				player.sprte.move(0, speed);
+				stack_up = 0;
+			} 
+
+			for (size_t i = 0; i < Imp_Objects_Size; i++) {
+				if (player.sprte.getGlobalBounds().intersects(Imp_Objects[i].imp_shape.getGlobalBounds())) {
+					stack_down = 1;
+					break;
+				}
+				else {
+					stack_down = 0;
+				}
+			}
+			if (stack_down == 0) {
+				player.sprte.move(0, speed);
+				stack_up = 0;
+			}
+			else {
+				player.sprte.move(1, 0);
+			}
+		}
+
+		getPlayerCoordinateForView(player.sprte.getPosition().x, player.sprte.getPosition().y);
 		//стрельба
 		if (Mouse::isButtonPressed(Mouse::Left))
 		{
@@ -458,6 +562,10 @@ int main()
 				window.draw(Sprite(castTexture.getTexture()));
 		#endif
 
+		for (auto i : Imp_Objects) {
+			window.draw(i.imp_shape);
+		}
+
 		//-------------------------------------------------
 
 		window.display();
@@ -465,3 +573,7 @@ int main()
 	return 0;
 }
 
+
+void check_left(void) {
+
+}
