@@ -4,6 +4,7 @@
 
 using namespace sf;
 
+
 Image image_map;
 Image image_enemy;
 Image image_enemy2;
